@@ -1,0 +1,77 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: on_param
+    include-exception: false
+
+spring:
+  application:
+    name: blog-platform-api
+  profiles:
+    active: dev
+  config:
+    import: optional:file:.env
+
+  # --- Configuração de Persistência (JPA/Hibernate) ---
+  jpa:
+    open-in-view: true
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        '[format_sql]': true
+        '[use_sql_comments]': true
+        jdbc:
+          '[batch_size]': 25
+        '[order_inserts]': true
+        '[order_updates]': true
+
+  # --- Configuração de Serialização (JSON) ---
+  data:
+    web:
+      pageable:
+        serialization-mode: via_dto
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+      write-dates-as-timestamps: false
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: non_null
+    time-zone: UTC
+
+# ===================================================================
+
+# --- Configurações de Segurança (JWT) ---
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    expiration-ms: 86400000 # 24 horas
+    refresh-expiration-ms: 604800000 # 7 dias
+    issuer: blog-platform-api
+
+# ===================================================================
+
+# --- Configurações de Logging ---
+logging:
+  level:
+      com:
+        ufc:
+          blog: INFO # Nível INFO para produção
+      org:
+        springframework:
+          web: INFO
+          security: INFO
+        hibernate:
+          SQL: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/blog-platform.log
+

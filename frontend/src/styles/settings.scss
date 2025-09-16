@@ -1,0 +1,22 @@
+/**
+ * src/styles/settings.scss
+ *
+ * Configures SASS variables and Vuetify overwrites
+ */
+
+// https://vuetifyjs.com/features/sass-variables/`
+// @use 'vuetify/settings' with (
+//   $color-pack: false
+// );
+
+
+.primary-bg{
+  background-color: #AFE8C2 !important;
+  font-weight: normal;
+  color: rgb(78, 78, 78);
+}
+.surface-bg{
+  background-color: #EFEFEF !important;
+  color: black;
+  font-weight: bolder;
+}

@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/autoestudo_db
+    username: autoestudo_user
+    password: autoestudo_pass
+    driver-class-name: org.postgresql.Driver
+
+   # --- Configurações JPA para desenvolvimento ---
+  jpa:
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  sql:
+    init:
+      mode: never
+
+  # --- Cache desabilitado em dev para evitar dados obsoletos ---
+  cache:
+    type: none
+
+  # --- Ferramentas de Desenvolvimento ---
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# --- Logging verboso para depuração ---
+logging:
+  level:
+    com:
+      ufc:
+        blog: DEBUG
+    org:
+      springframework:
+        web: DEBUG
+        security: DEBUG
+        hibernate:
+          SQL: DEBUG
+          type:
+            descriptor:
+              sql:
+                BasicBinder: TRACE
+  pattern:
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%-5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
