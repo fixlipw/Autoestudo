@@ -6,7 +6,6 @@ import com.ufc.blog.exception.BadRequestException;
 import com.ufc.blog.exception.ResourceNotFoundException;
 import com.ufc.blog.repository.UserRepository;
 import com.ufc.blog.util.SecurityUtils;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +53,7 @@ public class UserController {
      *
      * @param id ID do usuário a ser buscado
      * @return ResponseEntity contendo os detalhes do usuário
-     * @throws ResourceNotFoundException se o usuário não for encontrado
+     * @throws ResourceNotFoundException    se o usuário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão
      */
     @PreAuthorize("permitAll()")
@@ -62,7 +61,7 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         log.info("Buscando usuário por ID {}", id);
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", id));
         return ResponseEntity.ok(user);
     }
 
@@ -71,12 +70,12 @@ public class UserController {
      * Usuários com papel ADMIN podem atualizar qualquer usuário.
      * Usuários com papel USER só podem atualizar seus próprios dados.
      *
-     * @param id ID do usuário a ser atualizado
-     * @param request dados do usuário a serem atualizados
+     * @param id             ID do usuário a ser atualizado
+     * @param request        dados do usuário a serem atualizados
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo os detalhes do usuário atualizado
-     * @throws ResourceNotFoundException se o usuário não for encontrado
-     * @throws BadRequestException se o username ou email já estiverem em uso
+     * @throws ResourceNotFoundException    se o usuário não for encontrado
+     * @throws BadRequestException          se o username ou email já estiverem em uso
      * @throws AuthorizationDeniedException se o usuário não tiver permissão
      */
     @PreAuthorize("permitAll()")
@@ -106,10 +105,10 @@ public class UserController {
      * Usuários com papel ADMIN podem deletar qualquer usuário.
      * Usuários com papel USER só podem deletar seus próprios dados.
      *
-     * @param id ID do usuário a ser deletado
+     * @param id             ID do usuário a ser deletado
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity com status 204 (No Content) se a deleção for bem-sucedida
-     * @throws ResourceNotFoundException se o usuário não for encontrado
+     * @throws ResourceNotFoundException    se o usuário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão
      */
     @PreAuthorize("permitAll()")
@@ -129,12 +128,12 @@ public class UserController {
      * Usuários com papel ADMIN podem buscar qualquer usuário.
      * Usuários com papel USER só podem buscar seus próprios dados.
      *
-     * @param username username do usuário a ser buscado (opcional)
-     * @param email email do usuário a ser buscado (opcional)
+     * @param username       username do usuário a ser buscado (opcional)
+     * @param email          email do usuário a ser buscado (opcional)
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo os detalhes do usuário encontrado
-     * @throws BadRequestException se nenhum parâmetro for fornecido
-     * @throws ResourceNotFoundException se o usuário não for encontrado
+     * @throws BadRequestException          se nenhum parâmetro for fornecido
+     * @throws ResourceNotFoundException    se o usuário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão
      */
     @PreAuthorize("permitAll()")
@@ -145,11 +144,11 @@ public class UserController {
             throw new BadRequestException("Parâmetro 'username' ou 'email' deve ser fornecido.");
         }
 
-        User user = (username != null) ? 
-            userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "username", username)) : 
-            userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "email", email));
+        User user = (username != null) ?
+                userRepository.findByUsername(username)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário", "username", username)) :
+                userRepository.findByEmail(email)
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuário", "email", email));
 
         securityUtils.checkOwnershipOrAdmin(authentication, user);
         return ResponseEntity.ok(user);
@@ -161,8 +160,8 @@ public class UserController {
      * Apenas usuários com papel ADMIN podem acessar este endpoint.
      *
      * @param status status dos usuários a serem buscados
-     * @param page número da página (padrão: 0)
-     * @param size quantidade de usuários por página (padrão: 10)
+     * @param page   número da página (padrão: 0)
+     * @param size   quantidade de usuários por página (padrão: 10)
      * @return ResponseEntity contendo uma página de usuários com o status especificado
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -178,7 +177,7 @@ public class UserController {
      * Atualiza o status de um usuário.
      * Apenas usuários com papel ADMIN podem acessar este endpoint.
      *
-     * @param id ID do usuário cujo status será atualizado
+     * @param id     ID do usuário cujo status será atualizado
      * @param status novo status do usuário
      * @return ResponseEntity contendo os detalhes do usuário com o status atualizado
      * @throws ResourceNotFoundException se o usuário não for encontrado
@@ -242,12 +241,12 @@ public class UserController {
      * Usuários com papel ADMIN podem atualizar a senha de qualquer usuário.
      * Usuários com papel USER só podem atualizar sua própria senha.
      *
-     * @param id ID do usuário cuja senha será atualizada
-     * @param passwords array contendo a senha atual e a nova senha
+     * @param id             ID do usuário cuja senha será atualizada
+     * @param passwords      array contendo a senha atual e a nova senha
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity com status 204 (No Content) se a atualização for bem-sucedida
-     * @throws BadRequestException se o corpo da requisição estiver inválido ou a senha atual estiver incorreta
-     * @throws ResourceNotFoundException se o usuário não for encontrado
+     * @throws BadRequestException          se o corpo da requisição estiver inválido ou a senha atual estiver incorreta
+     * @throws ResourceNotFoundException    se o usuário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão
      */
     @PreAuthorize("permitAll()")
@@ -278,7 +277,7 @@ public class UserController {
      * Este endpoint é público e não requer autenticação.
      *
      * @param username username do usuário a ser verificado (opcional)
-     * @param email email do usuário a ser verificado (opcional)
+     * @param email    email do usuário a ser verificado (opcional)
      * @return ResponseEntity contendo true se o usuário existir, false caso contrário
      * @throws BadRequestException se nenhum parâmetro for fornecido
      */
@@ -327,7 +326,7 @@ public class UserController {
      */
     private User changeUserStatus(Long id, UserStatus status) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", id));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", id));
         user.setStatus(status);
         return userRepository.save(user);
     }

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { jwtDecode } from 'jwt-decode';
 import * as authService from '../services/authService';
+import * as userService from '../services/userService';
 import { getUserById } from '@/services/userService';
 import { useUiStore } from './ui';
 import type { User } from '@/types/User';
@@ -84,7 +85,7 @@ export const useAuthStore = defineStore('auth', {
                 this._setAuthData(tokenData.accessToken, tokenData.refreshToken, userData);
                 await router.push({ name: 'home' });
                 uiStore.showAlert({
-                    message: `Bem-vindo, ${userData.first_name || userData.username}!`,
+                    message: `Bem-vindo(a), ${userData.first_name || userData.username}!`,
                     type: 'success',
                     timeout: 3000
                 });

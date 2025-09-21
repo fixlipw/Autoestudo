@@ -80,7 +80,6 @@ const totalPosts = ref(0);
 const itemsPerPage = ref(5);
 
 const headers = [
-  {title: 'ID', key: 'id', align: 'start'},
   {title: 'Título', key: 'title'},
   {title: 'Data de Criação', key: 'created_at'},
   {title: 'Última Atualização', key: 'updated_at'},

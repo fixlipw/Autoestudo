@@ -39,7 +39,7 @@ public class SecurityUtils {
 
     public void checkOwnershipOrAdmin(Authentication auth, User targetUser) {
         if (auth == null) {
-             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Autenticação necessária.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Autenticação necessária.");
         }
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         boolean isOwner = userDetails.getUsername().equals(targetUser.getUsername());

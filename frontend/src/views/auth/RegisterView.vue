@@ -53,13 +53,16 @@
               <v-text-field
                   v-model="form.password.value"
                   label="Senha"
+                  name="password"
                   prepend-icon="mdi-lock"
-                  type="password"
+                  :type="showPassword ? 'text' : 'password'"
                   required
                   :error="form.password.touched && !form.password.valid"
                   :error-messages="form.password.errors"
                   @blur="validateField('password')"
-              ></v-text-field>
+                  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showPassword = !showPassword"
+              />
 
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -88,6 +91,9 @@ import { useAuthStore } from '@/stores/auth';
 import { useUiStore } from '@/stores/ui';
 import type { RegisterPayload } from '@/types/auth';
 import { useValidation } from '@/composables/useValidation';
+import {ref} from "vue";
+
+const showPassword = ref(false);
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();

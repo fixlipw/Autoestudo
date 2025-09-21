@@ -10,11 +10,10 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.security.core.Authentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -28,21 +27,16 @@ import java.util.Optional;
 public class JwtService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtService.class);
-
-    @Value("${app.jwt.secret}")
-    private String jwtSecret;
-
-    @Value("${app.jwt.issuer}")
-    private String issuer;
-
-    @Value("${app.jwt.expiration-ms}")
-    private int jwtExpirationInMs;
-
-    @Value("${app.jwt.refresh-expiration-ms}")
-    private int jwtRefreshExpirationInMs;
-
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
+    @Value("${app.jwt.issuer}")
+    private String issuer;
+    @Value("${app.jwt.expiration-ms}")
+    private int jwtExpirationInMs;
+    @Value("${app.jwt.refresh-expiration-ms}")
+    private int jwtRefreshExpirationInMs;
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
@@ -68,15 +62,15 @@ public class JwtService {
 
         String refreshToken;
         Optional<RefreshToken> existingRefreshTokenOpt =
-                refreshTokenRepository.findTopByUserOrderByExpiryDateDesc(userPrincipal.getUser());
+                refreshTokenRepository.findByUser(userPrincipal.getUser());
 
         if (existingRefreshTokenOpt.isPresent() && existingRefreshTokenOpt.get().getExpiryDate().isAfter(Instant.now().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime())) {
             refreshToken = existingRefreshTokenOpt.get().getToken();
         } else {
-            RefreshToken newRefreshToken = new RefreshToken();
-            newRefreshToken.setUser(userPrincipal.getUser());
-            newRefreshToken.setExpiryDate(refreshExpiryDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
-            newRefreshToken.setToken(Jwts.builder()
+            RefreshToken tokenEntity = existingRefreshTokenOpt.orElseGet(RefreshToken::new);
+            tokenEntity.setUser(userPrincipal.getUser());
+            tokenEntity.setExpiryDate(refreshExpiryDate.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDateTime());
+            tokenEntity.setToken(Jwts.builder()
                     .subject(Long.toString(userPrincipal.getId()))
                     .issuer(issuer)
                     .issuedAt(new Date())
@@ -84,12 +78,12 @@ public class JwtService {
                     .signWith(key)
                     .compact());
 
-            refreshToken = refreshTokenRepository.save(newRefreshToken).getToken();
+            refreshToken = refreshTokenRepository.save(tokenEntity).getToken();
         }
 
         User user = userRepository
-            .findById(userPrincipal.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", userPrincipal.getId()));
+                .findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", "id", userPrincipal.getId()));
 
         return Map.of(
                 "accessToken", accessToken,

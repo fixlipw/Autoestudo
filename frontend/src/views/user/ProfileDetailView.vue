@@ -86,6 +86,16 @@
                   {{ authStore.user?.role === 'ADMIN' ? 'Administrador' : 'Usuário' }}
                 </v-list-item-subtitle>
               </v-list-item>
+
+              <v-list-item @click="deleteAccount()">
+                <template v-slot:prepend>
+                  <v-icon class="text-danger">mdi-delete</v-icon>
+                </template>
+                <v-list-item-title class="text-danger font-weight-bold">Excluir conta</v-list-item-title>
+                <v-list-item-subtitle>
+                  Esta ação é irreversível.
+                </v-list-item-subtitle>
+              </v-list-item>
             </v-list>
           </v-card-text>
         </v-card>
@@ -96,12 +106,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useUiStore } from '@/stores/ui';
 import { useAuthStore } from '@/stores/auth';
 import UserUpdateForm from '@/components/user/UserUpdateForm.vue';
 import UserPostsList from '@/components/user/UserPostsList.vue';
 import PasswordChangeForm from '@/components/user/ChangePasswordForm.vue';
 import {UserStatus} from "@/types/enums";
+import * as userService from "@/services/userService";
 
+const uiStore = useUiStore();
 const authStore = useAuthStore();
 
 const formattedCreationDate = computed(() => {
@@ -118,6 +131,24 @@ const userStats = computed(() => ({
   publishedPosts: authStore.user?.publishedPostsCount || 0,
   comments: authStore.user?.commentsCount || 0,
 }));
+
+const deleteAccount = async () => {
+  if (!authStore.user) return;
+  const confirmed = await uiStore.showConfirmDialog({
+    title: 'Excluir Conta',
+    message: `Esta ação é irreversível. Tem certeza que deseja excluir a conta "${authStore.user.username}"?\nTodas as suas publicações e comentários serão removidos.`,
+  });
+  if (!confirmed) return;
+
+  try {
+    await userService.deleteUser(authStore.user.id);
+    uiStore.showAlert({ message: 'Conta excluída com sucesso!', type: 'success' });
+    await authStore.handleLogout();
+  } catch (error) {
+    console.error('Erro ao excluir conta:', error);
+    uiStore.showAlert({ message: 'Não foi possível excluir a conta.', type: 'error' });
+  }
+};
 
 const statusUser: Record<UserStatus, string> = {
   ACTIVE: 'Ativo',

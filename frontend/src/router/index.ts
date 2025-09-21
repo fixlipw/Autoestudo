@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
     const authStore = useAuthStore();
 
     if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-        next({ name: 'login' });
+        next({ name: 'login', query: { redirectReason: 'auth' } });
     } else if (to.meta.requiresAdmin && !authStore.isAdmin) {
         next({ name: 'home' });
     } else {

@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @Table(name = "refresh_tokens")
 public class RefreshToken extends AuditableEntity {
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
     private User user;
 
     @Column(nullable = false, unique = true)

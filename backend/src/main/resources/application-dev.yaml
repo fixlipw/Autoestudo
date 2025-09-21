@@ -5,7 +5,7 @@ spring:
     password: autoestudo_pass
     driver-class-name: org.postgresql.Driver
 
-   # --- Configurações JPA para desenvolvimento ---
+    # --- Configurações JPA para desenvolvimento ---
   jpa:
     show-sql: true
     defer-datasource-initialization: true

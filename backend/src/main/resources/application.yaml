@@ -61,15 +61,15 @@ app:
 # --- Configurações de Logging ---
 logging:
   level:
-      com:
-        ufc:
-          blog: INFO # Nível INFO para produção
-      org:
-        springframework:
-          web: INFO
-          security: INFO
-        hibernate:
-          SQL: WARN
+    com:
+      ufc:
+        blog: INFO # Nível INFO para produção
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+      hibernate:
+        SQL: WARN
   pattern:
     console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
   file:

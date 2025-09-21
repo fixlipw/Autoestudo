@@ -9,11 +9,9 @@ import com.ufc.blog.exception.ResourceNotFoundException;
 import com.ufc.blog.repository.CommentRepository;
 import com.ufc.blog.repository.PostRepository;
 import com.ufc.blog.util.SecurityUtils;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,12 +38,12 @@ public class CommentController {
      * Apenas usuários autenticados podem criar comentários.
      * Comentários só podem ser adicionados a posts publicados.
      *
-     * @param postId ID do post onde o comentário será adicionado
-     * @param request Detalhes do comentário a ser criado (apenas o campo content é considerado)
+     * @param postId         ID do post onde o comentário será adicionado
+     * @param request        Detalhes do comentário a ser criado (apenas o campo content é considerado)
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo o comentário criado
      * @throws ResourceNotFoundException se o post não for encontrado
-     * @throws BadRequestException se o post não estiver publicado
+     * @throws BadRequestException       se o post não estiver publicado
      */
     @PreAuthorize("permitAll()")
     @PostMapping("/posts/{postId}/comments")
@@ -72,10 +70,10 @@ public class CommentController {
      * Comentários de posts publicados são acessíveis a todos.
      * Comentários de posts não publicados são acessíveis apenas ao autor do post, administradores ou ao autor do comentário.
      *
-     * @param id ID do comentário a ser buscado
+     * @param id             ID do comentário a ser buscado
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo o comentário encontrado
-     * @throws ResourceNotFoundException se o comentário não for encontrado
+     * @throws ResourceNotFoundException    se o comentário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão para acessar o comentário
      */
     @GetMapping("/comments/{id}")
@@ -97,10 +95,10 @@ public class CommentController {
      * Apaga um comentário pelo ID.
      * Apenas o autor do comentário, administradores ou o autor do post (se não publicado) podem apagar comentários.
      *
-     * @param id ID do comentário a ser apagado
+     * @param id             ID do comentário a ser apagado
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity com status 204 (No Content) se a deleção for bem-sucedida
-     * @throws ResourceNotFoundException se o comentário não for encontrado
+     * @throws ResourceNotFoundException    se o comentário não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão para apagar o comentário
      */
     @PreAuthorize("permitAll()")
@@ -125,12 +123,12 @@ public class CommentController {
      * Comentários de posts publicados são acessíveis a todos.
      * Comentários de posts não publicados são acessíveis apenas ao autor do post e administradores.
      *
-     * @param postId ID do post cujos comentários serão listados
-     * @param page Número da página para paginação (padrão: 0)
-     * @param size Tamanho da página para paginação (padrão: 10)
+     * @param postId         ID do post cujos comentários serão listados
+     * @param page           Número da página para paginação (padrão: 0)
+     * @param size           Tamanho da página para paginação (padrão: 10)
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo uma página de comentários
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão para acessar os comentários
      */
     @PreAuthorize("permitAll()")
@@ -152,9 +150,9 @@ public class CommentController {
      * Comentários de posts publicados são acessíveis a todos.
      * Comentários de posts não publicados são acessíveis apenas ao autor do comentário e administradores.
      *
-     * @param authorId ID do autor cujos comentários serão listados
-     * @param page Número da página para paginação (padrão: 0)
-     * @param size Tamanho da página para paginação (padrão: 10)
+     * @param authorId       ID do autor cujos comentários serão listados
+     * @param page           Número da página para paginação (padrão: 0)
+     * @param size           Tamanho da página para paginação (padrão: 10)
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo uma página de comentários
      */

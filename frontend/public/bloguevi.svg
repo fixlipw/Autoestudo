@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#4F46E5"/>
+  <g>
+    <text x="12" y="42" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#fff">B</text>
+    <text x="32" y="42" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="bold" fill="#FBBF24">V</text>
+  </g>
+  <circle cx="50" cy="18" r="6" fill="#FBBF24"/>
+  <rect x="16" y="48" width="32" height="4" rx="2" fill="#fff" opacity="0.3"/>
+</svg>
+

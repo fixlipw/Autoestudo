@@ -6,7 +6,6 @@ import com.ufc.blog.entity.User;
 import com.ufc.blog.exception.ResourceNotFoundException;
 import com.ufc.blog.repository.PostRepository;
 import com.ufc.blog.util.SecurityUtils;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +28,11 @@ public class PostController {
     private final SecurityUtils securityUtils;
 
     // ===== CRUD Operations =====
-    
+
     /**
      * Cria um novo post. Apenas usuários autenticados podem criar posts.
      *
-     * @param request Detalhes do post a ser criado
+     * @param request        Detalhes do post a ser criado
      * @param authentication Informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo o post criado
      */
@@ -58,8 +57,8 @@ public class PostController {
      * Administradores veem todos os posts, usuários autenticados veem apenas seus próprios posts,
      * e usuários não autenticados veem apenas posts publicados.
      *
-     * @param page número da página (padrão: 0)
-     * @param size tamanho da página (padrão: 10)
+     * @param page           número da página (padrão: 0)
+     * @param size           tamanho da página (padrão: 10)
      * @param authentication informações de autenticação do usuário requisitante (pode ser null)
      * @return ResponseEntity contendo a página de posts
      */
@@ -85,10 +84,10 @@ public class PostController {
      * Recupera um post pelo ID.
      * Posts publicados são acessíveis a todos. Posts não publicados são acessíveis apenas ao autor ou administradores.
      *
-     * @param id ID do post a ser buscado
+     * @param id             ID do post a ser buscado
      * @param authentication informações de autenticação do usuário requisitante (pode ser null)
      * @return ResponseEntity contendo detalhes do post
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não tiver permissão para ver o post
      */
     @PreAuthorize("permitAll()")
@@ -112,11 +111,11 @@ public class PostController {
      * Atualiza os dados de um post existente.
      * Apenas o autor do post ou administradores podem atualizar.
      *
-     * @param id ID do post a ser atualizado
-     * @param request dados do post a serem atualizados
+     * @param id             ID do post a ser atualizado
+     * @param request        dados do post a serem atualizados
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post atualizado
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -139,10 +138,10 @@ public class PostController {
      * Deleta um post pelo ID.
      * Apenas o autor do post ou administradores podem deletar.
      *
-     * @param id ID do post a ser deletado
+     * @param id             ID do post a ser deletado
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity com status 204 (No Content) se a deleção for bem-sucedida
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -160,6 +159,7 @@ public class PostController {
     }
 
     // ===== Query & Search Operations =====
+
     /**
      * Recupera uma página contendo todos os posts publicados.
      * Este endpoint é público e não requer autenticação.
@@ -178,9 +178,9 @@ public class PostController {
      * Recupera uma página contendo todos os posts de um autor específico.
      * Administradores e o próprio autor veem todos os posts, demais usuários veem apenas publicados.
      *
-     * @param authorId ID do autor cujos posts serão buscados
-     * @param page número da página (padrão: 0)
-     * @param size tamanho da página (padrão: 10)
+     * @param authorId       ID do autor cujos posts serão buscados
+     * @param page           número da página (padrão: 0)
+     * @param size           tamanho da página (padrão: 10)
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo a página de posts do autor
      */
@@ -198,8 +198,8 @@ public class PostController {
      * Apenas administradores podem acessar este endpoint.
      *
      * @param status status dos posts a serem buscados
-     * @param page número da página (padrão: 0)
-     * @param size tamanho da página (padrão: 10)
+     * @param page   número da página (padrão: 0)
+     * @param size   tamanho da página (padrão: 10)
      * @return ResponseEntity contendo a página de posts com o status especificado
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -214,9 +214,9 @@ public class PostController {
      * Apenas administradores podem acessar este endpoint.
      *
      * @param authorId ID do autor cujos posts serão buscados
-     * @param status status dos posts a serem buscados
-     * @param page número da página (padrão: 0)
-     * @param size tamanho da página (padrão: 10)
+     * @param status   status dos posts a serem buscados
+     * @param page     número da página (padrão: 0)
+     * @param size     tamanho da página (padrão: 10)
      * @return ResponseEntity contendo a página de posts do autor com o status especificado
      */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -227,15 +227,16 @@ public class PostController {
     }
 
     // ===== Status Management =====
+
     /**
      * Atualiza o status de um post (DRAFT, PUBLISHED, ARCHIVED).
      * Apenas o autor do post ou administradores podem atualizar o status.
      *
-     * @param id ID do post cujo status será atualizado
-     * @param status novo status do post
+     * @param id             ID do post cujo status será atualizado
+     * @param status         novo status do post
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post com o status atualizado
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -256,10 +257,10 @@ public class PostController {
      * Publica um post, alterando seu status para PUBLISHED.
      * Apenas o autor do post ou administradores podem publicar.
      *
-     * @param id ID do post a ser publicado
+     * @param id             ID do post a ser publicado
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post publicado
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -272,10 +273,10 @@ public class PostController {
      * Remove a publicação de um post, alterando seu status para DRAFT.
      * Apenas o autor do post ou administradores podem remover a publicação.
      *
-     * @param id ID do post cuja publicação será removida
+     * @param id             ID do post cuja publicação será removida
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post com a publicação removida
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -288,10 +289,10 @@ public class PostController {
      * Arquiva um post, alterando seu status para ARCHIVED.
      * Apenas o autor do post ou administradores podem arquivar.
      *
-     * @param id ID do post a ser arquivado
+     * @param id             ID do post a ser arquivado
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post arquivado
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     @PreAuthorize("permitAll()")
@@ -301,15 +302,16 @@ public class PostController {
     }
 
     // ===== Utility =====
+
     /**
      * Método auxiliar para alterar o status de um post.
      * Apenas o autor do post ou administradores podem alterar o status.
      *
-     * @param id ID do post cujo status será alterado
-     * @param status novo status do post
+     * @param id             ID do post cujo status será alterado
+     * @param status         novo status do post
      * @param authentication informações de autenticação do usuário requisitante
      * @return ResponseEntity contendo detalhes do post com o status alterado
-     * @throws ResourceNotFoundException se o post não for encontrado
+     * @throws ResourceNotFoundException    se o post não for encontrado
      * @throws AuthorizationDeniedException se o usuário não for o autor ou administrador
      */
     private ResponseEntity<Post> changePostStatus(Long id, PostStatus status, Authentication authentication) {

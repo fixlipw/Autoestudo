@@ -28,10 +28,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType("application/json;charset=UTF-8");
 
         String jsonResponse = String.format(
-            "{ \"timestamp\": \"%s\", \"status\": 401, \"error\": \"Unauthorized\", \"message\": \"%s\", \"path\": \"%s\" }",
-            java.time.LocalDateTime.now(),
-            "Você não está autorizado a acessar este recurso.",
-            uri
+                "{ \"timestamp\": \"%s\", \"status\": 401, \"error\": \"Unauthorized\", \"message\": \"%s\", \"path\": \"%s\" }",
+                java.time.LocalDateTime.now(),
+                "Você não está autorizado a acessar este recurso.",
+                uri
         );
 
         response.getWriter().write(jsonResponse);

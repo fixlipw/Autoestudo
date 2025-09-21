@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Page<Comment> findByPostId(Long postId, Pageable pageable);
+
     Page<Comment> findByAuthorId(Long authorId, Pageable pageable);
 
     @Query("SELECT c FROM Comment c WHERE c.author.id = :authorId AND c.post.status = 'PUBLISHED'")
