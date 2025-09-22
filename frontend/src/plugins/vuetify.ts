@@ -16,13 +16,13 @@ import { VBtn } from 'vuetify/components'
 const myCustomLightTheme = {
     dark: false,
     colors: {
-        background: '#F5F5F5', // mantém neutro para contraste
+        background: '#F5F5F5',
         surface: '#FFFFFF',
-        primary: '#4F46E5', // Roxo do ícone
-        secondary: '#FBBF24', // Amarelo do ícone
+        primary: '#4F46E5',
+        secondary: '#FBBF24',
         error: '#D32F2F',
         danger: '#E53935',
-        info: '#6366F1', // Tom roxo mais claro para info
+        info: '#6366F1',
         success: '#388E3C',
         warning: '#FFA000',
     },
@@ -33,7 +33,7 @@ const myCustomDarkTheme = {
     colors: {
         background: '#121212',
         surface: '#1E1E1E',
-        primary: '#BB86FC',
+        primary: '#4F46E5',
         secondary: '#03DAC6',
         error: '#CF6679',
         danger: '#E53935',
@@ -43,7 +43,6 @@ const myCustomDarkTheme = {
     },
 }
 
-// Função para obter o tema salvo no localStorage
 function getSavedTheme() {
     const saved = localStorage.getItem('bloguevi-theme');
     if (saved === 'myCustomDarkTheme' || saved === 'myCustomLightTheme') {
@@ -52,7 +51,6 @@ function getSavedTheme() {
     return 'myCustomLightTheme';
 }
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
     components: {
         VDataTable,

@@ -34,6 +34,10 @@
           <v-icon left>mdi-plus-box</v-icon>
           <span class="hidden-sm-and-down">Novo Post</span>
         </v-btn>
+        <v-btn class="mr-2" to="/posts" variant="text">
+          <v-icon left>mdi-file-document</v-icon>
+          <span class="hidden-sm-and-down">Últimas Postagens</span>
+        </v-btn>
         <v-btn
             v-if="authStore.isAdmin"
             class="mr-2"

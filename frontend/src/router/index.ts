@@ -32,6 +32,11 @@ const router = createRouter({
             meta: { requiresAdmin: true },
         },
         {
+            path: '/posts',
+            name: 'post-list',
+            component: () => import('@/views/posts/PostListView.vue'),
+        },
+        {
             path: '/posts/:id',
             name: 'post-detail',
             component: () => import('@/views/posts/PostDetailView.vue'),
